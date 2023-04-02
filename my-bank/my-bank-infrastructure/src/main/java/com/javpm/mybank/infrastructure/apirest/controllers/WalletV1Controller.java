@@ -60,6 +60,7 @@ public class WalletV1Controller implements WalletV1Api {
 
   @Override
   public Mono<ResponseEntity<Void>> transfer(Mono<TransferRequestV1DTO> transferRequestV1DTO, ServerWebExchange exchange) {
+    //TODO it will have its own handler which will make use of the TransactionService to create a new transaction
     return WalletV1Api.super.transfer(transferRequestV1DTO, exchange);
   }
 }
