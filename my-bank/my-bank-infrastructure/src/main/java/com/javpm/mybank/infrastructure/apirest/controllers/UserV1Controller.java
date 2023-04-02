@@ -5,9 +5,9 @@ import java.net.URI;
 import com.javpm.mybank.infraastructure.apirest.apis.UserV1Api;
 import com.javpm.mybank.infraastructure.apirest.model.UserRequestV1DTO;
 import com.javpm.mybank.infrastructure.apirest.mappers.UserV1DTOMapper;
-import com.javpm.mybank.application.commands.SaveCommandHandler;
-import com.javpm.mybank.application.commands.SaveUserCommand;
-import com.javpm.mybank.domain.User;
+import com.javpm.mybank.application.commands.CommandHandler;
+import com.javpm.mybank.application.commands.RegisterUserCommand;
+import com.javpm.mybank.domain.model.User;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,7 +18,7 @@ import reactor.core.publisher.Mono;
 @AllArgsConstructor
 public class UserV1Controller implements UserV1Api {
 
-  private final SaveCommandHandler<SaveUserCommand, User> saveUserCommandHandler;
+  private final CommandHandler<RegisterUserCommand, User> saveUserCommandHandler;
 
   private final UserV1DTOMapper userV1DTOMapper;
 

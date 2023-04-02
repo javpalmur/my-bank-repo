@@ -2,15 +2,16 @@ package com.javpm.mybank.infrastructure.apirest.controllers;
 
 import java.net.URI;
 
-import com.javpm.mybank.application.queries.FindWalletQueryHandler;
+import com.javpm.mybank.application.commands.CreateDepositCommand;
 import com.javpm.mybank.application.queries.QueryHandler;
 import com.javpm.mybank.infraastructure.apirest.apis.WalletV1Api;
+import com.javpm.mybank.infraastructure.apirest.model.DepositRequestV1DTO;
 import com.javpm.mybank.infraastructure.apirest.model.TransferRequestV1DTO;
 import com.javpm.mybank.infraastructure.apirest.model.WalletRequestV1DTO;
 import com.javpm.mybank.infraastructure.apirest.model.WalletV1DTO;
-import com.javpm.mybank.application.commands.SaveCommandHandler;
-import com.javpm.mybank.application.commands.SaveWalletCommand;
-import com.javpm.mybank.domain.Wallet;
+import com.javpm.mybank.application.commands.CommandHandler;
+import com.javpm.mybank.application.commands.CreateWalletCommand;
+import com.javpm.mybank.domain.model.Wallet;
 import com.javpm.mybank.infrastructure.apirest.mappers.WalletV1DTOMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,9 @@ import reactor.core.publisher.Mono;
 @AllArgsConstructor
 public class WalletV1Controller implements WalletV1Api {
 
-  private final SaveCommandHandler<SaveWalletCommand, Wallet> saveWalletCommandHandler;
+  private final CommandHandler<CreateWalletCommand, Wallet> createWalletCommandHandler;
+
+  private final CommandHandler<CreateDepositCommand, Void> createDepositTransactionCommandHandler;
 
   private final QueryHandler<Integer, Mono<Wallet>> findWalletQueryHandler;
 
@@ -31,7 +34,7 @@ public class WalletV1Controller implements WalletV1Api {
   public Mono<ResponseEntity<Void>> createWallet(Mono<WalletRequestV1DTO> walletRequestV1DTO, ServerWebExchange exchange) {
     return walletRequestV1DTO
         .map(this.walletV1DTOMapper::asSaveWalletCommand)
-        .flatMap(this.saveWalletCommandHandler::execute)
+        .flatMap(this.createWalletCommandHandler::execute)
         .map(this.walletV1DTOMapper::asWalletV1DTO)
         .map(walletV1DTO -> ResponseEntity.created(URI.create(exchange.getRequest().getURI() + "/" + walletV1DTO.getId())).build());
   }
@@ -43,6 +46,17 @@ public class WalletV1Controller implements WalletV1Api {
         .map(this.walletV1DTOMapper::asWalletV1DTO)
         .map(ResponseEntity::ok);
   }
+
+  @Override
+  public Mono<ResponseEntity<Void>> depositInWallet(Integer walletId, Mono<DepositRequestV1DTO> depositRequestV1DTO,
+      ServerWebExchange exchange) {
+    return depositRequestV1DTO
+        .map(request -> this.walletV1DTOMapper.asCreateDepositCommand(request, walletId))
+        .flatMap(this.createDepositTransactionCommandHandler::execute)
+        .map(ResponseEntity::ok);
+  }
+
+
 
   @Override
   public Mono<ResponseEntity<Void>> transfer(Mono<TransferRequestV1DTO> transferRequestV1DTO, ServerWebExchange exchange) {

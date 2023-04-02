@@ -5,6 +5,9 @@ import lombok.Value;
 
 @Value
 @Builder
-public class SaveWalletCommand implements Command {
+public class CreateDepositCommand implements Command {
 
+  Integer targetWalletId;
+
+  Long amount;
 }

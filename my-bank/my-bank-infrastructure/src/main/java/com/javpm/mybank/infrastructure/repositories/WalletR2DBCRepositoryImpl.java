@@ -1,7 +1,9 @@
 package com.javpm.mybank.infrastructure.repositories;
 
-import com.javpm.mybank.domain.Wallet;
+import com.javpm.mybank.domain.exceptions.NotFoundException;
+import com.javpm.mybank.domain.model.Wallet;
 import com.javpm.mybank.domain.repositories.WalletRepository;
+import com.javpm.mybank.infrastructure.repositories.mappers.WalletDBMapper;
 import com.javpm.mybank.infrastructure.repositories.model.WalletDB;
 import lombok.AllArgsConstructor;
 import org.springframework.data.r2dbc.repository.R2dbcRepository;
@@ -14,14 +16,22 @@ public class WalletR2DBCRepositoryImpl implements WalletRepository {
 
   private WalletH2Repository repository;
 
+  private WalletDBMapper walletDBMapper;
+
   @Override
   public Mono<Wallet> save(Wallet wallet) {
-    return null;
+    return Mono.just(wallet)
+        .map(walletDBMapper::asWalletDB)
+        .flatMap(this.repository::save)
+        .map(walletDBMapper::asWallet);
   }
 
   @Override
   public Mono<Wallet> findById(Integer walletId) {
-    return null;
+    return Mono.just(walletId)
+        .flatMap(this.repository::findById)
+        .switchIfEmpty(Mono.defer(() -> Mono.error(new NotFoundException(String.format("Wallet with id %s not found", walletId)))))
+        .map(walletDBMapper::asWallet);
   }
 
   @Repository

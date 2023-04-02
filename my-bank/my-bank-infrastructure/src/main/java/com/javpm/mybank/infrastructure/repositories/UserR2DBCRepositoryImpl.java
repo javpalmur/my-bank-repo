@@ -1,6 +1,7 @@
 package com.javpm.mybank.infrastructure.repositories;
 
-import com.javpm.mybank.domain.User;
+import com.javpm.mybank.domain.exceptions.NotFoundException;
+import com.javpm.mybank.domain.model.User;
 import com.javpm.mybank.domain.repositories.UserRepository;
 import com.javpm.mybank.infrastructure.repositories.mappers.UserDBMapper;
 import com.javpm.mybank.infrastructure.repositories.model.UserDB;
@@ -22,6 +23,14 @@ public class UserR2DBCRepositoryImpl implements UserRepository {
     return Mono.just(user)
         .map(userDBMapper::asUserDB)
         .flatMap(this.repository::save)
+        .map(userDBMapper::asUser);
+  }
+
+  @Override
+  public Mono<User> findById(Integer userId) {
+    return Mono.just(userId)
+        .flatMap(this.repository::findById)
+        .switchIfEmpty(Mono.defer(() -> Mono.error(new NotFoundException(String.format("User with id %s not found", userId)))))
         .map(userDBMapper::asUser);
   }
 

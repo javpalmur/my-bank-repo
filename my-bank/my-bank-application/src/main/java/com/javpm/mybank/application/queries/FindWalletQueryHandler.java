@@ -1,6 +1,6 @@
 package com.javpm.mybank.application.queries;
 
-import com.javpm.mybank.domain.Wallet;
+import com.javpm.mybank.domain.model.Wallet;
 import com.javpm.mybank.domain.repositories.WalletRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -14,6 +14,6 @@ public class FindWalletQueryHandler implements QueryHandler<Integer, Mono<Wallet
 
   @Override
   public Mono<Wallet> execute(Integer walletId) {
-    return null;
+    return walletRepository.findById(walletId);
   }
 }

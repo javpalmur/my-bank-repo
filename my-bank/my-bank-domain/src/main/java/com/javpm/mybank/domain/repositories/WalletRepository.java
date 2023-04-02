@@ -1,6 +1,6 @@
 package com.javpm.mybank.domain.repositories;
 
-import com.javpm.mybank.domain.Wallet;
+import com.javpm.mybank.domain.model.Wallet;
 import reactor.core.publisher.Mono;
 
 
