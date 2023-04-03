@@ -1,6 +1,16 @@
 # My Bank
 
-This is a simple example of a small bank service with their typical operations offered via an API REST. 
+This small bank application is designed using the hexagonal architecture and built with Spring Boot and Java 11. Additionally, it is a reactive application and uses an H2 in-memory database.
 
-The service is built with a reactive hexagonal Architecture in a Spring Data Application.
-This application uses an inmemory H2 Data Base, which is a Data Base in memory.
+# Things to Improve
+Although the application is functional, there are some things that could be improved. For example, there are currently no tests for the Wallet class, and more validation could be added to ensure data integrity. Additionally, the implementation of the transaction use case is not yet complete.
+
+# How to Run the Application
+To run the application, simply execute the following command from the boot module:
+
+mvn spring-boot:run
+
+This will start the application and allow you to interact with it using the specified endpoints.
+
+
+
