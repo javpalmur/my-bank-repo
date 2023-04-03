@@ -35,7 +35,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
         <configuration>
-          <mainClass>com.javpm.mybank.MyBankApplication</mainClass>
+          <mainClass>org.javpm.mybank.MyBankApplication</mainClass>
           <excludes>
             <exclude>
               <groupId>org.projectlombok</groupId>

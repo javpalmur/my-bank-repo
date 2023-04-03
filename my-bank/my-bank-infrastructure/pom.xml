@@ -55,8 +55,8 @@
                 <interfaceOnly>true</interfaceOnly>
                 <skipDefaultInterface>false</skipDefaultInterface>
               </configOptions>
-              <apiPackage>com.javpm.mybank.infraastructure.apirest.apis</apiPackage>
-              <modelPackage>com.javpm.mybank.infraastructure.apirest.model</modelPackage>
+              <apiPackage>org.javpm.mybank.infrastructure.apirest.apis</apiPackage>
+              <modelPackage>org.javpm.mybank.infrastructure.apirest.model</modelPackage>
               <modelNameSuffix>DTO</modelNameSuffix>
             </configuration>
           </execution>
