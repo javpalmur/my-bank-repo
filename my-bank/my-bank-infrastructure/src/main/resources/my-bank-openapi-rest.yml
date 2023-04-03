@@ -1,0 +1,250 @@
+openapi: 3.0.3
+info:
+  title: My Bank API
+  version: 1.0.0
+  description: Rest API to simulate a small bank
+servers:
+  - url: http://localhost:8080/mybank
+    description: Local environment
+tags:
+  - name: userV1
+  - name: walletV1
+paths:
+  /v1/users:
+    post:
+      tags:
+        - userV1
+      operationId: registerUser
+      summary: Register a new user
+      description: Creates a new user in the system.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequestV1'
+      responses:
+        '201':
+          description: User created successfully.
+        "400":
+          description: Bad request.
+        "500":
+          description: Unexpected error.
+  /v1/wallets:
+    post:
+      tags:
+        - walletV1
+      operationId: createWallet
+      summary: Create a new wallet.
+      description: Creates a new wallet.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WalletRequestV1'
+      responses:
+        '201':
+          description: Wallet created successfully.
+        '400':
+          description: Bad request.
+        "500":
+          description: Unexpected error.
+  /v1/wallets/{walletId}:
+    get:
+      tags:
+        - walletV1
+      operationId: getWalletFromId
+      summary: Retrieve information for the specified wallet
+      description: Retrieves information for the wallet with the given ID belonging to the user with the corresponding ID, including the balance and transaction history.
+      parameters:
+        - $ref: '#/components/parameters/WalletIdParam'
+      responses:
+        '200':
+          description: Wallet information returned successfully.
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/WalletExtendedV1'
+        '400':
+          description: Bad request.
+        '404':
+          description: Wallet not found.
+        "500":
+          description: Unexpected error.
+  /v1/wallets/{walletId}/deposit:
+    post:
+      tags:
+        - walletV1
+      operationId: depositInWallet
+      summary: Deposit money in the given wallet
+      description: Deposit money in the given wallet.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DepositRequestV1'
+      parameters:
+        - $ref: '#/components/parameters/WalletIdParam'
+      responses:
+        '200':
+          description: Wallet deposit made successfully.
+        '400':
+          description: Bad request.
+        '404':
+          description: Wallet not found.
+        "500":
+          description: Unexpected error.
+  /v1/wallets/transfer:
+    post:
+      tags:
+        - walletV1
+      operationId: transfer
+      summary: Make a transfer between two wallets.
+      description: Make a transfer between two wallets.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransferRequestV1'
+      responses:
+        '200':
+          description: Transfer made successfully.
+        '400':
+          description: Invalid request parameters.
+        '404':
+          description: Wallet not found.
+        "500":
+          description: Unexpected error.
+components:
+  parameters:
+    WalletIdParam:
+      name: walletId
+      in: path
+      description: ID of the wallet to retrieve.
+      required: true
+      schema:
+        type: integer
+  schemas:
+    UserRequestV1:
+      type: object
+      description: the user request
+      properties:
+        name:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+      required:
+        - name
+        - lastName
+        - email
+        - password
+    UserV1:
+      type: object
+      description: the user request
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+      required:
+        - id
+        - name
+        - lastName
+        - email
+        - password
+    WalletRequestV1:
+      type: object
+      description: the wallet request
+      properties:
+        nickname:
+          type: string
+        userId:
+          type: integer
+      required:
+        - nickname
+    WalletV1:
+      type: object
+      description: the wallet request
+      properties:
+        id:
+          type: integer
+        nickname:
+          type: string
+        userId:
+          type: integer
+      required:
+        - id
+        - nickname
+        - userId
+    WalletExtendedV1:
+      type: object
+      description: the wallet with extended information
+      properties:
+        wallet:
+          $ref: '#/components/schemas/WalletV1'
+        transactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/TransactionV1'
+      required:
+        - wallet
+    TransactionV1:
+      type: object
+      description: the transaction
+      properties:
+        id:
+          type: integer
+        targetWalletId:
+          type: string
+        originWalletId:
+          type: integer
+        amount:
+          type: integer
+          format: int64
+          minimum: 0
+        createdAt:
+          type: string
+      required:
+        - id
+        - targetWalletId
+        - amount
+        - createdAt
+    DepositRequestV1:
+      type: object
+      properties:
+        amount:
+          type: integer
+          format: int64
+          minimum: 0
+      required:
+        - amount
+    TransferRequestV1:
+      type: object
+      properties:
+        originWalletId:
+          type: integer
+        targetWalletId:
+          type: integer
+        amount:
+          type: integer
+          format: int64
+          minimum: 0
+      required:
+        - originWalletId
+        - targetWalletId
+        - amount
