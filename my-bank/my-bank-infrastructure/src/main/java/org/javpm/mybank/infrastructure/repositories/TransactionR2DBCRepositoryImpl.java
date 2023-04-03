@@ -16,20 +16,20 @@ public class TransactionR2DBCRepositoryImpl implements TransactionRepository {
 
   private TransactionH2Repository repository;
 
-  private TransactionTableMapper TransactionTableMapper;
+  private TransactionTableMapper transactionTableMapper;
 
   @Override
   public Mono<Transaction> save(Transaction transaction) {
     return Mono.just(transaction)
-        .map(TransactionTableMapper::asTransactionTable)
+        .map(transactionTableMapper::asTransactionTable)
         .flatMap(this.repository::save)
-        .map(TransactionTableMapper::asTransaction);
+        .map(transactionTableMapper::asTransaction);
   }
 
   @Override
   public Flux<Transaction> findByWalletId(Integer walletId) {
     return this.repository.findByOriginWalletIdOrTargetWalletId(walletId, walletId)
-        .map(TransactionTableMapper::asTransaction);
+        .map(transactionTableMapper::asTransaction);
   }
 
   @Repository

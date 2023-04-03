@@ -1,10 +1,18 @@
 package org.javpm.mybank.integration;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.time.LocalDateTime;
+
+import org.javpm.mybank.application.queries.WalletExtendedVO;
+import org.javpm.mybank.domain.model.Transaction;
 import org.javpm.mybank.domain.model.User;
 import org.javpm.mybank.domain.model.Wallet;
+import org.javpm.mybank.domain.repositories.TransactionRepository;
 import org.javpm.mybank.domain.repositories.UserRepository;
 import org.javpm.mybank.domain.repositories.WalletRepository;
 import org.javpm.mybank.infrastructure.apirest.model.DepositRequestV1DTO;
+import org.javpm.mybank.infrastructure.apirest.model.WalletExtendedV1DTO;
 import org.javpm.mybank.infrastructure.apirest.model.WalletRequestV1DTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +40,9 @@ class WalletV1RestIT {
   @Autowired
   private WalletRepository walletRepository;
 
+  @Autowired
+  private TransactionRepository transactionRepository;
+
   @Test
   void createWallet() {
     // Arrange
@@ -56,6 +67,42 @@ class WalletV1RestIT {
     // Assert
     response.expectStatus().isCreated();
   }
+
+  @Test
+  void findWalletExtended() {
+    // Arrange
+    final User user = new User();
+    user.setName("USER_NAME");
+    user.setEmail("email@email.com");
+    user.setLastName("LAST_NAME");
+    user.setPassword("PASSWORD");
+    final User savedUser = userRepository.save(user).block();
+
+    final Wallet wallet = new Wallet();
+    wallet.setBalance(0L);
+    wallet.setNickname("WALLET_NICKNAME");
+    wallet.setUserId(savedUser.getId());
+    final Wallet savedWallet = walletRepository.save(wallet).block();
+
+    final Transaction transaction = new Transaction();
+    transaction.setAmount(20L);
+    transaction.setTargetWalletId(savedWallet.getId());
+    transaction.setCreatedAt(LocalDateTime.now());
+    transactionRepository.save(transaction).block();
+    // Act
+    final WebTestClient.ResponseSpec response = this.webClient.get()
+        .uri(BASE_PATH + "/" + savedWallet.getId())
+        .accept(MediaType.APPLICATION_JSON)
+        .exchange();
+
+    // Assert
+    response.expectStatus().isOk();
+    final WalletExtendedV1DTO walletExtendedV1DTO = response.expectBody(WalletExtendedV1DTO.class).returnResult().getResponseBody();
+    assertThat(walletExtendedV1DTO)
+        .extracting("transactions").asList().first()
+        .hasFieldOrPropertyWithValue("amount", 20L);
+  }
+
 
   @Test
   void createDeposit() {

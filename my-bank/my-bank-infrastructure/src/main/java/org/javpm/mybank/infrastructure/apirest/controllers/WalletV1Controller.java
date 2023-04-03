@@ -4,11 +4,12 @@ import java.net.URI;
 
 import org.javpm.mybank.application.commands.CreateDepositCommand;
 import org.javpm.mybank.application.queries.QueryHandler;
+import org.javpm.mybank.application.queries.WalletExtendedVO;
 import org.javpm.mybank.infrastructure.apirest.apis.WalletV1Api;
 import org.javpm.mybank.infrastructure.apirest.model.DepositRequestV1DTO;
 import org.javpm.mybank.infrastructure.apirest.model.TransferRequestV1DTO;
+import org.javpm.mybank.infrastructure.apirest.model.WalletExtendedV1DTO;
 import org.javpm.mybank.infrastructure.apirest.model.WalletRequestV1DTO;
-import org.javpm.mybank.infrastructure.apirest.model.WalletV1DTO;
 import org.javpm.mybank.application.commands.CommandHandler;
 import org.javpm.mybank.application.commands.CreateWalletCommand;
 import org.javpm.mybank.domain.model.Wallet;
@@ -27,7 +28,7 @@ public class WalletV1Controller implements WalletV1Api {
 
   private final CommandHandler<CreateDepositCommand, Void> createDepositTransactionCommandHandler;
 
-  private final QueryHandler<Integer, Mono<Wallet>> findWalletQueryHandler;
+  private final QueryHandler<Integer, Mono<WalletExtendedVO>> findWalletExtendedQueryHandler;
 
   private final WalletV1DTOMapper walletV1DTOMapper;
 
@@ -40,10 +41,10 @@ public class WalletV1Controller implements WalletV1Api {
   }
 
   @Override
-  public Mono<ResponseEntity<WalletV1DTO>> getWalletFromId(Integer walletId, ServerWebExchange exchange) {
+  public Mono<ResponseEntity<WalletExtendedV1DTO>> getWalletFromId(Integer walletId, ServerWebExchange exchange) {
     return Mono.just(walletId)
-        .flatMap(this.findWalletQueryHandler::execute)
-        .map(this.walletV1DTOMapper::asWalletV1DTO)
+        .flatMap(this.findWalletExtendedQueryHandler::execute)
+        .map(this.walletV1DTOMapper::asWalletExtendedV1DTO)
         .map(ResponseEntity::ok);
   }
 

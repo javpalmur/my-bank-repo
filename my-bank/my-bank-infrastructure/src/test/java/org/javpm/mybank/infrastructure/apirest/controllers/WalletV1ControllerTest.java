@@ -1,7 +1,7 @@
 package org.javpm.mybank.infrastructure.apirest.controllers;
 
 import org.javpm.mybank.application.commands.CreateWalletCommandHandler;
-import org.javpm.mybank.application.queries.FindWalletQueryHandler;
+import org.javpm.mybank.application.queries.FindWalletExtendedQueryHandler;
 import org.javpm.mybank.infrastructure.apirest.mappers.WalletV1DTOMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,7 +22,7 @@ class WalletV1ControllerTest {
   private CreateWalletCommandHandler createWalletCommandHandler;
 
   @Mock
-  private FindWalletQueryHandler findWalletQueryHandler;
+  private FindWalletExtendedQueryHandler findWalletQueryHandler;
 
   @Mock
   private WalletV1DTOMapper walletV1DTOMapper;

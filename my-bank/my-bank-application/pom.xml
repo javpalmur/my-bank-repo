@@ -22,6 +22,11 @@
       <groupId>${project.groupId}</groupId>
       <artifactId>my-bank-domain</artifactId>
     </dependency>
+    <dependency>
+      <groupId>io.projectreactor.addons</groupId>
+      <artifactId>reactor-extra</artifactId>
+      <version>3.5.1</version>
+    </dependency>
   </dependencies>
   <build>
     <plugins>

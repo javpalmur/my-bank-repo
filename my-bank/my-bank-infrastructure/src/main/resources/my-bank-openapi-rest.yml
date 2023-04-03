@@ -65,7 +65,7 @@ paths:
           content:
             application/json:
               schema:
-                  $ref: '#/components/schemas/WalletV1'
+                  $ref: '#/components/schemas/WalletExtendedV1'
         '400':
           description: Bad request.
         '404':
@@ -191,6 +191,39 @@ components:
         - id
         - nickname
         - userId
+    WalletExtendedV1:
+      type: object
+      description: the wallet with extended information
+      properties:
+        wallet:
+          $ref: '#/components/schemas/WalletV1'
+        transactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/TransactionV1'
+      required:
+        - wallet
+    TransactionV1:
+      type: object
+      description: the transaction
+      properties:
+        id:
+          type: integer
+        targetWalletId:
+          type: string
+        originWalletId:
+          type: integer
+        amount:
+          type: integer
+          format: int64
+          minimum: 0
+        createdAt:
+          type: string
+      required:
+        - id
+        - targetWalletId
+        - amount
+        - createdAt
     DepositRequestV1:
       type: object
       properties:
