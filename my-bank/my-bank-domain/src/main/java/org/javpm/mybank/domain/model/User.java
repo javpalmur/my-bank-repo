@@ -1,6 +1,5 @@
 package org.javpm.mybank.domain.model;
 
-import lombok.Builder;
 import lombok.Data;
 
 @Data

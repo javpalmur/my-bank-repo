@@ -62,7 +62,7 @@ class RegisterUserCommandTest {
     final Mono<User> result = this.registerUserCommandHandler.execute(registerUserCommand);
 
     // Assert
-    StepVerifier.create(result).expectError();
+    StepVerifier.create(result).verifyError();
   }
 
   private User getUser() {

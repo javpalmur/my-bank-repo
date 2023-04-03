@@ -15,7 +15,6 @@ public class FindWalletExtendedQueryHandler implements QueryHandler<Integer, Mon
 
   private final TransactionRepository transactionRepository;
 
-
   @Override
   public Mono<WalletExtendedVO> execute(Integer walletId)
   {
