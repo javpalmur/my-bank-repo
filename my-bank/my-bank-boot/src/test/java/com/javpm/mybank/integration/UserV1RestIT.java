@@ -20,7 +20,7 @@ class UserV1RestIT {
   private WebTestClient webClient;
 
   @Test
-  void createUser() {
+  void registerUser() {
     // Arrange
     final UserRequestV1DTO userRequestV1DTO = new UserRequestV1DTO()
         .name("USER_NAME")

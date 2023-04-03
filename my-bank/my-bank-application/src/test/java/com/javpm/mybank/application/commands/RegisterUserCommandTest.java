@@ -56,7 +56,7 @@ class RegisterUserCommandTest {
   }
 
   @Test
-  void shouldNotRegisterUserWhenItAlreadyExists() {
+  void expectErrorWhenUserAlreadyExists() {
     // Arrange
     final RegisterUserCommand registerUserCommand = getRegisterUserCommand();
 
