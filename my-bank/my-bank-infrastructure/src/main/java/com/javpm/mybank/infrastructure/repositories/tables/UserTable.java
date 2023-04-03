@@ -1,12 +1,14 @@
-package com.javpm.mybank.infrastructure.repositories.model;
+package com.javpm.mybank.infrastructure.repositories.tables;
 
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
 
 @Data
 @Builder
-public class UserDB {
+@Table(name = "users")
+public class UserTable {
 
   @Id
   Integer id;

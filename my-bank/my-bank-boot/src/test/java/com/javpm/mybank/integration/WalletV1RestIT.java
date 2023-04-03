@@ -42,6 +42,7 @@ class WalletV1RestIT {
     user.setPassword("PASSWORD");
     final User savedUser = userRepository.save(user).block();
     final WalletRequestV1DTO walletRequestV1DTO = new WalletRequestV1DTO()
+        .userId(savedUser.getId())
         .nickname(WALLET_NICKNAME)
         .userId(savedUser.getId());
 
@@ -61,7 +62,7 @@ class WalletV1RestIT {
     // Arrange
     final Wallet wallet = new Wallet();
     wallet.setNickname(WALLET_NICKNAME);
-    wallet.setAmount(0L);
+    wallet.setBalance(0L);
     final Wallet savedWallet = walletRepository.save(wallet).block();
     final DepositRequestV1DTO depositRequestV1DTO = new DepositRequestV1DTO()
         .amount(25L);

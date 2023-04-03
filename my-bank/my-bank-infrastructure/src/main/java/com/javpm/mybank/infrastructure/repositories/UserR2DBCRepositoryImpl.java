@@ -3,8 +3,8 @@ package com.javpm.mybank.infrastructure.repositories;
 import com.javpm.mybank.domain.exceptions.NotFoundException;
 import com.javpm.mybank.domain.model.User;
 import com.javpm.mybank.domain.repositories.UserRepository;
-import com.javpm.mybank.infrastructure.repositories.mappers.UserDBMapper;
-import com.javpm.mybank.infrastructure.repositories.model.UserDB;
+import com.javpm.mybank.infrastructure.repositories.mappers.UserTableMapper;
+import com.javpm.mybank.infrastructure.repositories.tables.UserTable;
 import lombok.AllArgsConstructor;
 import org.springframework.data.r2dbc.repository.R2dbcRepository;
 import org.springframework.stereotype.Repository;
@@ -16,14 +16,14 @@ public class UserR2DBCRepositoryImpl implements UserRepository {
 
   private UserH2Repository repository;
 
-  private UserDBMapper userDBMapper;
+  private UserTableMapper userTableMapper;
 
   @Override
   public Mono<User> save(User user) {
     return Mono.just(user)
-        .map(userDBMapper::asUserDB)
+        .map(userTableMapper::asUserTable)
         .flatMap(this.repository::save)
-        .map(userDBMapper::asUser);
+        .map(userTableMapper::asUser);
   }
 
   @Override
@@ -31,10 +31,10 @@ public class UserR2DBCRepositoryImpl implements UserRepository {
     return Mono.just(userId)
         .flatMap(this.repository::findById)
         .switchIfEmpty(Mono.defer(() -> Mono.error(new NotFoundException(String.format("User with id %s not found", userId)))))
-        .map(userDBMapper::asUser);
+        .map(userTableMapper::asUser);
   }
 
   @Repository
-  public interface UserH2Repository extends R2dbcRepository<UserDB, Integer> {
+  public interface UserH2Repository extends R2dbcRepository<UserTable, Integer> {
   }
 }

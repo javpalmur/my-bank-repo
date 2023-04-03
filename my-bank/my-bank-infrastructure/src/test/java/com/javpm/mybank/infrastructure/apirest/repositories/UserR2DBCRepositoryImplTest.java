@@ -5,8 +5,8 @@ import static org.mockito.BDDMockito.given;
 import com.javpm.mybank.domain.model.User;
 import com.javpm.mybank.infrastructure.repositories.UserR2DBCRepositoryImpl;
 import com.javpm.mybank.infrastructure.repositories.UserR2DBCRepositoryImpl.UserH2Repository;
-import com.javpm.mybank.infrastructure.repositories.mappers.UserDBMapperImpl;
-import com.javpm.mybank.infrastructure.repositories.model.UserDB;
+import com.javpm.mybank.infrastructure.repositories.mappers.UserTableMapperImpl;
+import com.javpm.mybank.infrastructure.repositories.tables.UserTable;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,7 +33,7 @@ class UserR2DBCRepositoryImplTest {
   private UserH2Repository repository;
 
   @Spy
-  private UserDBMapperImpl userDBMapper;
+  private UserTableMapperImpl userDBMapper;
 
   private UserR2DBCRepositoryImpl userR2DBCRepository;
 
@@ -46,8 +46,8 @@ class UserR2DBCRepositoryImplTest {
   void shouldSaveUser() {
     // Arrange
     final User user = getUser();
-    final UserDB userDB = userDBMapper.asUserDB(user);
-    given(this.repository.save(userDB)).willReturn(Mono.just(userDB));
+    final UserTable userTable = userDBMapper.asUserTable(user);
+    given(this.repository.save(userTable)).willReturn(Mono.just(userTable));
 
     // Act
     Mono<User> result = userR2DBCRepository.save(user);
@@ -60,8 +60,8 @@ class UserR2DBCRepositoryImplTest {
   void shouldFindUserById() {
     // Arrange
     final User user = getUser();
-    final UserDB userDB = userDBMapper.asUserDB(user);
-    given(this.repository.findById(USER_ID)).willReturn(Mono.just(userDB));
+    final UserTable userTable = userDBMapper.asUserTable(user);
+    given(this.repository.findById(USER_ID)).willReturn(Mono.just(userTable));
 
     // Act
     Mono<User> result = userR2DBCRepository.findById(USER_ID);

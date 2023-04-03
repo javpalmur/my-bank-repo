@@ -8,6 +8,6 @@ import org.mapstruct.Mapping;
 @Mapper
 public interface CreateWalletCommandMapper {
 
-  @Mapping(target = "amount", constant = "0L")
+  @Mapping(target = "balance", constant = "0L")
   Wallet asWallet(CreateWalletCommand command);
 }

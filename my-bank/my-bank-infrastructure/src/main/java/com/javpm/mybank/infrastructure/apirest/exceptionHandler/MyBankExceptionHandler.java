@@ -14,7 +14,7 @@ public class MyBankExceptionHandler {
   }
 
   @ExceptionHandler(value = Exception.class)
-  public ResponseEntity<Object> handleGenericException() {
+  public ResponseEntity<Object> handleGenericException(Exception e) {
     return ResponseEntity.internalServerError().build();
   }
 }

@@ -9,5 +9,7 @@ public class Wallet {
 
   String nickname;
 
-  Long amount;
+  Integer userId;
+
+  Long balance;
 }
