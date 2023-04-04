@@ -22,10 +22,16 @@
       <groupId>${project.groupId}</groupId>
       <artifactId>my-bank-application</artifactId>
     </dependency>
+
     <dependency>
-      <groupId>io.swagger.parser.v3</groupId>
-      <artifactId>swagger-parser</artifactId>
-      <version>2.1.12</version>
+      <groupId>org.springdoc</groupId>
+      <artifactId>springdoc-openapi-webflux-ui</artifactId>
+      <version>1.7.0</version>
+    </dependency>
+    <dependency>
+      <groupId>javax.validation</groupId>
+      <artifactId>validation-api</artifactId>
+      <version>2.0.1.Final</version>
     </dependency>
     <dependency>
       <groupId>org.openapitools</groupId>

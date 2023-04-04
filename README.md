@@ -24,7 +24,9 @@ To run the application, simply execute the following command from the boot modul
 mvn spring-boot:run
 ```
 
-This will start the application and allow you to interact with it using the differents endpoints which can be seen in the open api specification in the infrastructure module.
+This will start the application and allow you to interact with it using the different endpoints.
+The OpenApi definition can be accessed here:
+http://localhost:8080/mybank/swagger-ui.html
 
 
 
