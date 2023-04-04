@@ -1,7 +1,7 @@
 # My Bank
 
 ## Introduction
-This small bank application is designed using Hexagonal Architecture and built with Spring Boot, Spring reactor and Java 11. Additionally, it uses an H2 in-memory database.
+.
 
 ## Operations available
 The application exposes several operations via its REST API:
