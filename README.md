@@ -1,7 +1,7 @@
 # My Bank
 
 ## Introduction
-.
+This small bank application is designed using Hexagonal Architecture and built with Spring Boot, Spring reactor and Java 11. Additionally, it uses an H2 in-memory database via Spring Data R2DBC.
 
 ## Operations available
 The application exposes several operations via its REST API:
@@ -27,6 +27,5 @@ mvn spring-boot:run
 This will start the application and allow you to interact with it using the different endpoints.
 The OpenApi definition can be accessed here:
 http://localhost:8080/mybank/swagger-ui.html
-
 
 
